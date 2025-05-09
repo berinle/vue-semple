@@ -5,8 +5,21 @@ const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+  origin: '*', // Allow all origins in CF environment
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: false
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
 // Endpoint to fetch a random joke
 app.get('/api/jokes/random', async (req, res) => {
@@ -19,6 +32,6 @@ app.get('/api/jokes/random', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server running on port ${port}`);
 }); 

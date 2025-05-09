@@ -17,6 +17,7 @@
 
 <script>
 import axios from 'axios';
+import { config } from '../config';
 
 export default {
   name: 'JokeDisplay',
@@ -32,7 +33,7 @@ export default {
       this.loading = true;
       this.error = null;
       try {
-        const response = await axios.get('http://localhost:3001/api/jokes/random');
+        const response = await axios.get(`${config.apiBaseUrl}/api/jokes/random`);
         if (response.data && (response.data.joke || (response.data.setup && response.data.delivery))) {
           this.joke = response.data;
         } else {
@@ -41,7 +42,7 @@ export default {
       } catch (error) {
         console.error('Error fetching joke:', error);
         this.error = error.response?.status === 404 
-          ? 'Backend server not running. Please start the server with npm run dev:backend'
+          ? 'Backend server not running or not accessible. Please check the server status.'
           : 'Failed to fetch joke. Please try again.';
         this.joke = null;
       } finally {
