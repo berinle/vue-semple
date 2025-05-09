@@ -1,0 +1,19 @@
+applications:
+- name: vue-sample-frontend
+  memory: 128M
+  buildpacks:
+    - staticfile_buildpack
+  path: dist
+  random-route: true
+
+- name: vue-sample-backend
+  memory: 256M
+  buildpacks:
+    - nodejs_buildpack
+  path: .
+  command: npm start
+  random-route: true
+  env:
+    NODE_ENV: production
+  # routes:
+  #   - route: vue-sample-${random-word}.cfapps.io 
